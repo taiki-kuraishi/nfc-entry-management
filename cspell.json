@@ -1,7 +1,9 @@
 {
     "ignoreWords": [
         "golangci",
-        "labstack"
+        "labstack",
+        "goimports",
+        "gopls"
     ],
     "ignorePaths": [
         "/.gitattributes",

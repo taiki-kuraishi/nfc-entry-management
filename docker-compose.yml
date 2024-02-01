@@ -1,0 +1,23 @@
+services:
+  api :
+    container_name: nfc-entry-management-api
+    image: nfc-entry-management-api:latest
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api/src:/app
+    ports :
+      - "8080:8080"
+    tty: true
+
+  mysql:
+    container_name: nfc-entry-management-mysql
+    image: nfc-entry-management-mysql:latest
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./mysql/.env.mysql
