@@ -10,6 +10,6 @@
         "/.gitignore",
         "/api/src/go.mod",
         "/api/src/go.sum",
-        "*/.env.*"
+        "./mysql/.env.mysql.example"
     ]
 }
