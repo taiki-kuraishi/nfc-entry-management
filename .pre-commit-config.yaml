@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-json
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+
+  - repo: https://github.com/streetsidesoftware/cspell-cli
+    rev: v8.3.0
+    hooks:
+      - id: cspell
+        args: [--config, "./cspell.json"]
+
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.55.2
+    hooks:
+      - id: golangci-lint
+
+  - repo: local
+    hooks:
+      - id: docker-compose-check
+        name: Run docker-compose build
+        entry: docker-compose build
+        language: system
+        pass_filenames: false
+        stages: [commit]
