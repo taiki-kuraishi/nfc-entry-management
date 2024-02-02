@@ -16,10 +16,13 @@ repos:
       - id: cspell
         args: [--config, "./cspell.json"]
 
-  - repo: https://github.com/golangci/golangci-lint
-    rev: v1.55.2
+  - repo: local
     hooks:
       - id: golangci-lint
+        name: golangci-lint
+        entry: sh -c 'cd api/ && docker build --target lint -t nfc-entry-management-api-lint:latest -f ./Dockerfile . && docker run --rm nfc-entry-management-api-lint:latest'
+        language: system
+        types: [go]
 
   - repo: local
     hooks:

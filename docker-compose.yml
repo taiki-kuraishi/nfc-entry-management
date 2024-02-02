@@ -1,10 +1,11 @@
 services:
   api :
-    container_name: nfc-entry-management-api
-    image: nfc-entry-management-api:latest
+    container_name: nfc-entry-management-api-development
+    image: nfc-entry-management-api-development:latest
     build:
       context: ./api
       dockerfile: Dockerfile
+      target: development
     volumes:
       - ./api/src:/app
     ports :
