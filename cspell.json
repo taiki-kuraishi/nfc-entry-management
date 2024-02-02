@@ -1,15 +1,15 @@
 {
     "ignoreWords": [
-        "golangci",
         "labstack",
-        "goimports",
-        "gopls"
+        "gopls",
+        "golangci",
+        "goimports"
     ],
     "ignorePaths": [
-        "/.gitattributes",
-        "/.gitignore",
-        "/api/src/go.mod",
         "/api/src/go.sum",
+        "/api/src/go.mod",
+        "/.gitignore",
+        "/.gitattributes",
         "./mysql/.env.mysql.example"
     ]
 }
