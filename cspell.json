@@ -3,7 +3,8 @@
         "labstack",
         "gopls",
         "golangci",
-        "goimports"
+        "goimports",
+        "wontfix"
     ],
     "ignorePaths": [
         "/api/src/go.sum",
