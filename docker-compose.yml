@@ -27,7 +27,7 @@ services:
     container_name: nfc-entry-management-nfc-reader
     image: nfc-entry-management-nfc-reader:latest
     devices:
-      - "/dev/bus/usb/001/002:/dev/bus/usb/001/002"
+      - "/dev/bus/usb/:/dev/bus/usb/"
     build:
       context: ./nfc_reader
       dockerfile: Dockerfile
