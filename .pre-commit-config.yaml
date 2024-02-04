@@ -3,12 +3,13 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
-      - id: check-added-large-files
-      - id: check-merge-conflict
-      - id: check-yaml
-      - id: check-json
       - id: trailing-whitespace
       - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-json
+      - id: check-added-large-files
 
   - repo: https://github.com/streetsidesoftware/cspell-cli
     rev: v8.3.0
@@ -23,6 +24,38 @@ repos:
         entry: sh -c 'cd api/ && docker build --target lint -t nfc-entry-management-api-lint:latest -f ./Dockerfile . && docker run --rm nfc-entry-management-api-lint:latest'
         language: system
         types: [go]
+
+  - repo: local
+    hooks:
+      - id: isort
+        name: isort
+        entry: sh -c 'cd nfc_reader/ && docker build --target isort -t nfc-entry-management-nfc-reader-isort:latest -f ./Dockerfile . && docker run --rm nfc-entry-management-nfc-reader-isort:latest'
+        language: system
+        types: [python]
+
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: sh -c 'cd nfc_reader/ && docker build --target black -t nfc-entry-management-nfc-reader-black:latest -f ./Dockerfile . && docker run --rm nfc-entry-management-nfc-reader-black:latest'
+        language: system
+        types: [python]
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: sh -c 'cd nfc_reader/ && docker build --target mypy -t nfc-entry-management-nfc-reader-mypy:latest -f ./Dockerfile . && docker run --rm nfc-entry-management-nfc-reader-mypy:latest'
+        language: system
+        types: [python]
+
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: sh -c 'cd nfc_reader/ && docker build --target pylint -t nfc-entry-management-nfc-reader-pylint:latest -f ./Dockerfile . && docker run --rm nfc-entry-management-nfc-reader-pylint:latest'
+        language: system
+        types: [python]
 
   - repo: local
     hooks:

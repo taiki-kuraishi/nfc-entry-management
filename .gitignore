@@ -5,6 +5,7 @@
 .env
 .env.mysql
 .env.api
+.env.nfc_reader
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:

@@ -22,3 +22,21 @@ services:
       - "3306:3306"
     env_file:
       - ./mysql/.env.mysql
+
+  nfc_reader:
+    container_name: nfc-entry-management-nfc-reader
+    image: nfc-entry-management-nfc-reader:latest
+    devices:
+      - "/dev/bus/usb/001/002:/dev/bus/usb/001/002"
+    build:
+      context: ./nfc_reader
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ./nfc_reader/src:/app/src
+      - ./nfc_reader/requirements.txt:/app/requirements.txt
+      - ./nfc_reader/requirements-dev.txt:/app/requirements-dev.txt
+      - ./nfc_reader/pyproject.toml:/app/pyproject.toml
+    env_file:
+      - ./nfc_reader/.env.nfc_reader
+    tty: true
