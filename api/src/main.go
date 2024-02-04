@@ -15,7 +15,7 @@ func main() {
 }
 
 func hello(c echo.Context) error {
-    return c.JSON(http.StatusOK, map[string]string{
-        "message": "Hello World",
-    })
+	return c.JSON(http.StatusOK, map[string]string{
+		"message": "Hello World",
+	})
 }

@@ -7,9 +7,12 @@ services:
       dockerfile: Dockerfile
       target: development
     volumes:
-      - ./api/src:/app
+      - ./api/src:/app/src
+      - ./api/.golangci.yml:/app/.golangci.yml
     ports :
       - "8080:8080"
+    env_file:
+      - ./api/.env.api
     tty: true
 
   mysql:
