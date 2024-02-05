@@ -1,0 +1,29 @@
+{
+    "ignorePaths": [
+        "/api/src/go.sum",
+        "/api/src/go.mod",
+        "/.vscode",
+        "/.gitignore",
+        "/.gitattributes",
+        "./nfc_reader/requirements.txt",
+        "./nfc_reader/requirements-dev.txt",
+        "./nfc_reader/pyproject.toml",
+        "./mysql/.env.mysql.example"
+    ],
+    "words": [
+        "wontfix",
+        "venv",
+        "usbutils",
+        "rdwr",
+        "pyproject",
+        "pylint",
+        "mypy",
+        "labstack",
+        "isort",
+        "gorm",
+        "gopls",
+        "golangci",
+        "goimports",
+        "dotenv"
+    ]
+}

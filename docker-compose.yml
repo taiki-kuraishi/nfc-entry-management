@@ -1,0 +1,45 @@
+services:
+  api :
+    container_name: nfc-entry-management-api-development
+    image: nfc-entry-management-api-development:latest
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ./api/src:/app/src
+      - ./api/.golangci.yml:/app/.golangci.yml
+    ports :
+      - "8080:8080"
+    env_file:
+      - ./api/.env.api
+    tty: true
+
+  mysql:
+    container_name: nfc-entry-management-mysql
+    image: nfc-entry-management-mysql:latest
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./mysql/.env.mysql
+
+  nfc_reader:
+    container_name: nfc-entry-management-nfc-reader
+    image: nfc-entry-management-nfc-reader:latest
+    devices:
+      - "/dev/bus/usb/:/dev/bus/usb/"
+    build:
+      context: ./nfc_reader
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ./nfc_reader/src:/app/src
+      - ./nfc_reader/requirements.txt:/app/requirements.txt
+      - ./nfc_reader/requirements-dev.txt:/app/requirements-dev.txt
+      - ./nfc_reader/pyproject.toml:/app/pyproject.toml
+    env_file:
+      - ./nfc_reader/.env.nfc_reader
+    tty: true

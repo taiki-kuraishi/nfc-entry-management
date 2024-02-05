@@ -1,0 +1,22 @@
+{
+    "recommendations": [
+        "tamasfe.even-better-toml",
+        "streetsidesoftware.code-spell-checker",
+        "shardulm94.trailing-spaces",
+        "redhat.vscode-yaml",
+        "ms-vscode-remote.remote-containers",
+        "ms-python.vscode-pylance",
+        "ms-python.pylint",
+        "ms-python.mypy-type-checker",
+        "ms-python.isort",
+        "ms-python.black-formatter",
+        "ms-python.autopep8",
+        "ms-azuretools.vscode-docker",
+        "mosapride.zenkaku",
+        "mikestead.dotenv",
+        "golang.go",
+        "github.vscode-github-actions",
+        "elagil.pre-commit-helper",
+        "christian-kohler.path-intellisense"
+    ]
+}
