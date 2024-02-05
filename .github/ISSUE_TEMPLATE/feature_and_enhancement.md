@@ -2,7 +2,7 @@
 name: feature and enhancement template
 about: feature and enhancement template
 title: ''
-labels: 'feature','enhancement'
+labels: ['feature','enhancement']
 assignees: ''
 
 ---
