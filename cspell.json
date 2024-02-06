@@ -8,7 +8,8 @@
         "./nfc_reader/requirements.txt",
         "./nfc_reader/requirements-dev.txt",
         "./nfc_reader/pyproject.toml",
-        "./mysql/.env.mysql.example"
+        "./mysql/.env.mysql.example",
+        "./LICENSE"
     ],
     "words": [
         "wontfix",
