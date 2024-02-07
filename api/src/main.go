@@ -19,8 +19,10 @@ func main() {
 
 	db := db.ConnectDB()
 	userRepository := repository.NewUserRepository(db)
+	entryRepository := repository.NewEntryRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository)
-	apiController := controller.NewApiController(userUsecase, location)
+	entryUsecase := usecase.NewEntryUsecase(entryRepository)
+	apiController := controller.NewApiController(userUsecase, entryUsecase, location)
 	e := router.NewRouter(apiController)
 	e.Logger.Fatal(e.Start(":8080"))
 }

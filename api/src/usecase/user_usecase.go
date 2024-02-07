@@ -3,13 +3,10 @@ package usecase
 import (
 	"api/model"
 	"api/repository"
-	"errors"
-
-	"gorm.io/gorm"
 )
 
 type IUserUsecase interface {
-	CreateOrUpdateUser(user model.User) error
+	CreateOrUpdateUser(user model.User) (string, error)
 }
 
 type UserUsecase struct {
@@ -20,25 +17,28 @@ func NewUserUsecase(ur repository.IUserRepository) IUserUsecase {
 	return &UserUsecase{ur: ur}
 }
 
-func (uu *UserUsecase) CreateOrUpdateUser(user model.User) error {
+func (uu *UserUsecase) CreateOrUpdateUser(user model.User) (string, error) {
 	DBUser := model.User{}
 
 	if err := uu.ur.GetUserByStudentNumber(&DBUser, user.StudentNumber); err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			if err := uu.ur.CreateUser(&user); err != nil {
-				return err
-			}
-		} else {
-			return err
+		return "", err
+	}
+
+	//Create user
+	if DBUser.StudentNumber == 0 {
+		if err := uu.ur.CreateUser(&user); err != nil {
+			return "", err
 		}
+		return "User created", nil
 	}
 
 	//Update user
 	if DBUser.Name != user.Name {
 		if err := uu.ur.UpdateUser(&user); err != nil {
-			return err
+			return "", err
 		}
+		return "User updated", nil
 	}
 
-	return nil
+	return "User already exists", nil
 }

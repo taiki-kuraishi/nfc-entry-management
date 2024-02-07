@@ -16,6 +16,7 @@
         "venv",
         "usecase",
         "usbutils",
+        "Unexited",
         "rdwr",
         "pyproject",
         "pylint",

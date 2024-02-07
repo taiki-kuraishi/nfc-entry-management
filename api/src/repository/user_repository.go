@@ -36,7 +36,7 @@ func (ur *UserRepository) UpdateUser(user *model.User) error {
 }
 
 func (ur *UserRepository) GetUserByStudentNumber(user *model.User,studentNumber uint) error {
-	if err := ur.db.Where("student_number=?", studentNumber).First(user).Error; err != nil {
+	if err := ur.db.Where("student_number=?", studentNumber).FirstOrInit(user).Error; err != nil {
 		return err
 	}
 	return nil

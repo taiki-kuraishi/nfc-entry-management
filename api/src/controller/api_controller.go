@@ -16,15 +16,29 @@ type IApiController interface {
 
 type ApiController struct {
 	uu       usecase.IUserUsecase
+	eu       usecase.IEntryUsecase
 	location *time.Location
 }
 
-func NewApiController(uu usecase.IUserUsecase, location *time.Location) IApiController {
-	return &ApiController{uu, location}
+type Response struct {
+    UserMessage  string `json:"user_message"`
+    EntryMessage string `json:"entry_message"`
+}
+
+
+type EntryRequest struct {
+	StudentNumber uint    `json:"student_number"`
+	Name          string  `json:"name"`
+	Timestamp     float64 `json:"timestamp"`
+}
+
+
+func NewApiController(uu usecase.IUserUsecase, eu usecase.IEntryUsecase, location *time.Location) IApiController {
+	return &ApiController{uu, eu, location}
 }
 
 func (ac *ApiController) RootController(c echo.Context) error {
-	request := model.EntryRequest{}
+	request := EntryRequest{}
 	if err := c.Bind(&request); err != nil {
 		fmt.Println(err.Error())
 		return c.JSON(http.StatusBadRequest, err.Error())
@@ -42,10 +56,21 @@ func (ac *ApiController) RootController(c echo.Context) error {
 		UpdatedAt:     timestamp,
 	}
 
-	if err := ac.uu.CreateOrUpdateUser(user); err != nil {
+	userMessage, err := ac.uu.CreateOrUpdateUser(user)
+	if err != nil {
 		fmt.Println(err.Error())
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.NoContent(http.StatusOK)
+	entryMessage, err := ac.eu.EntryOrExit(request.StudentNumber, timestamp)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	response := Response{
+		UserMessage:  userMessage,
+		EntryMessage: entryMessage,
+	}
+
+	return c.JSON(http.StatusOK, response)
 }
