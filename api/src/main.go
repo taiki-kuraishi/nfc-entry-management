@@ -1,21 +1,26 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/labstack/echo"
+	"api/controller"
+	"api/db"
+	"api/repository"
+	"api/router"
+	"api/usecase"
+	"fmt"
+	"os"
+	"time"
 )
 
 func main() {
-	e := echo.New()
+	location, err := time.LoadLocation(os.Getenv("TIMEZONE"))
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 
-	e.GET("/", hello)
-
+	db := db.ConnectDB()
+	userRepository := repository.NewUserRepository(db)
+	userUsecase := usecase.NewUserUsecase(userRepository)
+	apiController := controller.NewApiController(userUsecase, location)
+	e := router.NewRouter(apiController)
 	e.Logger.Fatal(e.Start(":8080"))
-}
-
-func hello(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]string{
-		"message": "Hello World",
-	})
 }
