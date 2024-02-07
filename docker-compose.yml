@@ -7,8 +7,7 @@ services:
       dockerfile: Dockerfile
       target: development
     volumes:
-      - ./api/src:/app/src
-      - ./api/.golangci.yml:/app/.golangci.yml
+      - ./api/src:/app
     ports :
       - "8080:8080"
     env_file:

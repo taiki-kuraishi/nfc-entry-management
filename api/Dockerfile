@@ -2,9 +2,8 @@ FROM golang:1.21.6-alpine AS base
 
 WORKDIR /app
 
-COPY ./src /app/src
+COPY ./src .
 
-WORKDIR /app/src
 
 RUN apk add --no-cache git && \
     go install -v golang.org/x/tools/cmd/goimports@latest && \
@@ -19,13 +18,11 @@ FROM base AS development
 
 WORKDIR /app
 
-COPY ./.golangci.yml .
-
 RUN wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /usr/local/bin v1.55.2
 
 # lint stage
 FROM development AS lint
 
-WORKDIR /app/src
+WORKDIR /app
 
-CMD [ "golangci-lint","run","--config","/app/.golangci.yml" ]
+CMD [ "golangci-lint","run","--config",".golangci.yml" ]
