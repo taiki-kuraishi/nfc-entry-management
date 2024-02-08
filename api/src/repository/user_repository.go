@@ -9,7 +9,7 @@ import (
 type IUserRepository interface {
 	CreateUser(user *model.User) error
 	UpdateUser(user *model.User) error
-	GetUserByStudentNumber(user *model.User,studentNumber uint) error
+	GetUserByStudentNumber(user *model.User, studentNumber uint) error
 }
 
 type UserRepository struct {
@@ -35,7 +35,7 @@ func (ur *UserRepository) UpdateUser(user *model.User) error {
 
 }
 
-func (ur *UserRepository) GetUserByStudentNumber(user *model.User,studentNumber uint) error {
+func (ur *UserRepository) GetUserByStudentNumber(user *model.User, studentNumber uint) error {
 	if err := ur.db.Where("student_number=?", studentNumber).FirstOrInit(user).Error; err != nil {
 		return err
 	}

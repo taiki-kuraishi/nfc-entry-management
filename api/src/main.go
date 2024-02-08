@@ -11,11 +11,12 @@ import (
 
 func main() {
 	db := db.ConnectDB()
+	entryValidator := validator.NewEntryValidator()
 	userValidator := validator.NewUserValidator()
 	userRepository := repository.NewUserRepository(db)
 	entryRepository := repository.NewEntryRepository(db)
+	entryUsecase := usecase.NewEntryUsecase(entryRepository, entryValidator)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
-	entryUsecase := usecase.NewEntryUsecase(entryRepository)
 	apiController := controller.NewApiController(userUsecase, entryUsecase)
 	e := router.NewRouter(apiController)
 	e.Logger.Fatal(e.Start(":8080"))
