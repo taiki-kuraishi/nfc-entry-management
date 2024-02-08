@@ -20,6 +20,7 @@
         "rdwr",
         "pyproject",
         "pylint",
+        "ozzo",
         "mypy",
         "labstack",
         "isort",

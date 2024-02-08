@@ -3,6 +3,7 @@ module api
 go 1.21.6
 
 require (
+	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/labstack/echo v3.3.10+incompatible
 	gorm.io/driver/mysql v1.5.2
 	gorm.io/gorm v1.25.6

@@ -15,16 +15,14 @@ type IApiController interface {
 }
 
 type ApiController struct {
-	uu       usecase.IUserUsecase
-	eu       usecase.IEntryUsecase
-	location *time.Location
+	uu usecase.IUserUsecase
+	eu usecase.IEntryUsecase
 }
 
 type Response struct {
-    UserMessage  string `json:"user_message"`
-    EntryMessage string `json:"entry_message"`
+	UserMessage  string `json:"user_message"`
+	EntryMessage string `json:"entry_message"`
 }
-
 
 type EntryRequest struct {
 	StudentNumber uint    `json:"student_number"`
@@ -32,9 +30,8 @@ type EntryRequest struct {
 	Timestamp     float64 `json:"timestamp"`
 }
 
-
-func NewApiController(uu usecase.IUserUsecase, eu usecase.IEntryUsecase, location *time.Location) IApiController {
-	return &ApiController{uu, eu, location}
+func NewApiController(uu usecase.IUserUsecase, eu usecase.IEntryUsecase) IApiController {
+	return &ApiController{uu, eu}
 }
 
 func (ac *ApiController) RootController(c echo.Context) error {
@@ -47,7 +44,7 @@ func (ac *ApiController) RootController(c echo.Context) error {
 	// convert float64 to time.Time
 	seconds := int64(request.Timestamp)
 	nanoseconds := int64((request.Timestamp - float64(seconds)) * 1e9)
-	timestamp := time.Unix(seconds, nanoseconds).In(ac.location)
+	timestamp := time.Unix(seconds, nanoseconds)
 
 	user := model.User{
 		StudentNumber: request.StudentNumber,

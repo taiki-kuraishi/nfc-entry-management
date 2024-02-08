@@ -6,23 +6,17 @@ import (
 	"api/repository"
 	"api/router"
 	"api/usecase"
-	"fmt"
-	"os"
-	"time"
+	"api/validator"
 )
 
 func main() {
-	location, err := time.LoadLocation(os.Getenv("TIMEZONE"))
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-
 	db := db.ConnectDB()
+	userValidator := validator.NewUserValidator()
 	userRepository := repository.NewUserRepository(db)
 	entryRepository := repository.NewEntryRepository(db)
-	userUsecase := usecase.NewUserUsecase(userRepository)
+	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
 	entryUsecase := usecase.NewEntryUsecase(entryRepository)
-	apiController := controller.NewApiController(userUsecase, entryUsecase, location)
+	apiController := controller.NewApiController(userUsecase, entryUsecase)
 	e := router.NewRouter(apiController)
 	e.Logger.Fatal(e.Start(":8080"))
 }
