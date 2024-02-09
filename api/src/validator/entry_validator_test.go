@@ -17,10 +17,12 @@ func TestEntryValidator_StudentNumberValidation(t *testing.T) {
 	StudentNumberMax, err := strconv.ParseUint(os.Getenv("STUDENT_NUMBER_MAX"), 10, 64)
 	assert.NoError(t, err)
 
+	sampleStudentNumber := uint(20122027)
+
 	ev := &EntryValidator{}
 
 	// Test case 1 valid student number
-	err = ev.StudentNumberValidation(20122027)
+	err = ev.StudentNumberValidation(sampleStudentNumber)
 	assert.NoError(t, err)
 
 	// Test case 2 invalid student number (not required)
@@ -52,13 +54,15 @@ func TestEntryValidator_EntryValidation(t *testing.T) {
 	TimeValidationMin, err := strconv.ParseInt(os.Getenv("TIME_VALIDATION_MIN"), 10, 64)
 	assert.NoError(t, err)
 
+	sampleStudentNumber := uint(20122027)
+
 	ev := &EntryValidator{}
 
 	// Test case 1 valid entry
 	entry := model.Entry{
 		EntryTime:     time.Now(),
 		ExitTime:      nil,
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 	}
 	err = ev.EntryValidation(entry)
 	assert.NoError(t, err)
@@ -66,7 +70,7 @@ func TestEntryValidator_EntryValidation(t *testing.T) {
 	//Test case 2 invalid EntryTime	(not required ExitTime)
 	entry = model.Entry{
 		ExitTime:      nil,
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 	}
 	err = ev.EntryValidation(entry)
 	exceptedErrorMessages := "entry_time: entry time is required."
@@ -76,7 +80,7 @@ func TestEntryValidator_EntryValidation(t *testing.T) {
 	entry = model.Entry{
 		EntryTime:     time.Unix(TimeValidationMin-1, 0),
 		ExitTime:      nil,
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 	}
 	err = ev.EntryValidation(entry)
 	exceptedErrorMessages = "entry_time: must be after " + time.Unix(TimeValidationMin, 0).String() + "."
@@ -86,7 +90,7 @@ func TestEntryValidator_EntryValidation(t *testing.T) {
 	entry = model.Entry{
 		EntryTime:     time.Now().Add(time.Second),
 		ExitTime:      nil,
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 	}
 	err = ev.EntryValidation(entry)
 	exceptedErrorMessages = "entry_time: must be before " + time.Now().Round(time.Second).String() + "."
@@ -96,7 +100,7 @@ func TestEntryValidator_EntryValidation(t *testing.T) {
 	entry = model.Entry{
 		EntryTime:     time.Unix(TimeValidationMin, 0),
 		ExitTime:      nil,
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 	}
 	err = ev.EntryValidation(entry)
 	assert.NoError(t, err)
@@ -105,7 +109,7 @@ func TestEntryValidator_EntryValidation(t *testing.T) {
 	entry = model.Entry{
 		EntryTime:     time.Now(),
 		ExitTime:      nil,
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 	}
 	err = ev.EntryValidation(entry)
 	assert.NoError(t, err)
@@ -162,7 +166,7 @@ func TestEntryValidator_EntryValidation(t *testing.T) {
 	entry = model.Entry{
 		EntryTime:     time.Now(),
 		ExitTime:      &exitTime,
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 	}
 	err = ev.EntryValidation(entry)
 	exceptedErrorMessages = "exit_time: must be after " + entry.EntryTime.String() + "."
@@ -173,7 +177,7 @@ func TestEntryValidator_EntryValidation(t *testing.T) {
 	entry = model.Entry{
 		EntryTime:     time.Now(),
 		ExitTime:      &exitTime,
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 	}
 	err = ev.EntryValidation(entry)
 	exceptedErrorMessages = "exit_time: must be before " + time.Now().Round(time.Second).String() + "."
@@ -184,7 +188,7 @@ func TestEntryValidator_EntryValidation(t *testing.T) {
 	entry = model.Entry{
 		EntryTime:     exitTime,
 		ExitTime:      &exitTime,
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 	}
 	err = ev.EntryValidation(entry)
 	assert.NoError(t, err)
@@ -194,7 +198,7 @@ func TestEntryValidator_EntryValidation(t *testing.T) {
 	entry = model.Entry{
 		EntryTime:     time.Unix(TimeValidationMin, 0),
 		ExitTime:      &exitTime,
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 	}
 	err = ev.EntryValidation(entry)
 	assert.NoError(t, err)
