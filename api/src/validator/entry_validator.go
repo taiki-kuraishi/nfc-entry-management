@@ -84,8 +84,8 @@ func (ev *EntryValidator) EntryValidation(entry model.Entry) error {
 		validation.Field(
 			&entry.EntryTime,
 			validation.Required.Error("entry time is required"),
-			TimeAfter{required: time.Unix(TimeValidationMin, 0)},
-			TimeBefore{required: time.Now()},
+			validation.Min(time.Unix(TimeValidationMin, 0)).Error("must be after "+time.Unix(TimeValidationMin, 0).String()),
+			validation.Max(time.Now()).Error("must be before "+time.Now().Round(time.Second).String()),
 		),
 		validation.Field(
 			&entry.StudentNumber,
@@ -103,7 +103,7 @@ func (ev *EntryValidator) EntryValidation(entry model.Entry) error {
 			validation.Field(
 				&entry.ExitTime,
 				TimeAfter{required: entry.EntryTime},
-				TimeBefore{required: time.Now()},
+				TimeBefore{required: time.Now().Round(time.Second)},
 			),
 		)
 	}

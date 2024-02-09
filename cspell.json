@@ -17,6 +17,7 @@
         "usecase",
         "usbutils",
         "Unexited",
+        "stretchr",
         "rdwr",
         "pyproject",
         "pylint",
