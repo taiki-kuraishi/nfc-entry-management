@@ -3,6 +3,7 @@ module api
 go 1.21.6
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/stretchr/testify v1.8.4

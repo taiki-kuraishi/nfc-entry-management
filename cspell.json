@@ -18,6 +18,7 @@
         "usbutils",
         "Unexited",
         "stretchr",
+        "sqlmock",
         "rdwr",
         "pyproject",
         "pylint",
@@ -29,6 +30,7 @@
         "gopls",
         "golangci",
         "goimports",
-        "dotenv"
+        "dotenv",
+        "Dialector"
     ]
 }

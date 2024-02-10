@@ -32,7 +32,6 @@ func (ur *UserRepository) UpdateUser(user *model.User) error {
 		return err
 	}
 	return nil
-
 }
 
 func (ur *UserRepository) GetUserByStudentNumber(user *model.User, studentNumber uint) error {
