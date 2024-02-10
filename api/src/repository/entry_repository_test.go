@@ -25,7 +25,7 @@ func NewDBMock() (*gorm.DB, sqlmock.Sqlmock, error) {
 	return gormDB, mock, nil
 }
 
-func TestCreateEntry(t *testing.T) {
+func TestEntryRepository_CreateEntry(t *testing.T) {
 	gormDB, mock, err := NewDBMock()
 	if err != nil {
 		t.Errorf(err.Error())
@@ -55,7 +55,7 @@ func TestCreateEntry(t *testing.T) {
 	}
 }
 
-func TestUpdateEntry(t *testing.T) {
+func TestEntryRepository_UpdateEntry(t *testing.T) {
 	gormDB, mock, err := NewDBMock()
 	if err != nil {
 		t.Errorf(err.Error())
@@ -86,7 +86,7 @@ func TestUpdateEntry(t *testing.T) {
 	}
 }
 
-func TestGetStudentNumberWithNullExitTime(t *testing.T) {
+func TestEntryRepository_GetStudentNumberWithNullExitTime(t *testing.T) {
 	gormDB, mock, err := NewDBMock()
 	if err != nil {
 		t.Error(err)

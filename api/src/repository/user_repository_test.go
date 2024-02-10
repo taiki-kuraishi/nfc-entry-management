@@ -18,7 +18,7 @@ func (a AnyTime) Match(v driver.Value) bool {
 	return ok
 }
 
-func TestCreateUser(t *testing.T) {
+func TestUserRepository_CreateUser(t *testing.T) {
 	sampleStudentNumber := uint(20122027)
 	sampleName := "カイシ　タロウ"
 	sampleTime := time.Unix(0, 0)
@@ -52,7 +52,7 @@ func TestCreateUser(t *testing.T) {
 	}
 }
 
-func TestUpdateUser(t *testing.T) {
+func TestUserRepository_UpdateUser(t *testing.T) {
 	gormDB, mock, err := NewDBMock()
 	if err != nil {
 		t.Errorf(err.Error())
@@ -82,7 +82,7 @@ func TestUpdateUser(t *testing.T) {
 	}
 }
 
-func TestGetUserByStudentNumber(t *testing.T) {
+func TestUserRepository_GetUserByStudentNumber(t *testing.T) {
 	gormDB, mock, err := NewDBMock()
 	if err != nil {
 		t.Errorf(err.Error())
@@ -90,7 +90,6 @@ func TestGetUserByStudentNumber(t *testing.T) {
 
 	tr := repository.IUserRepository(repository.NewUserRepository(gormDB))
 
-	// テストデータの作成
 	sampleUser := &model.User{
 		Name:          "カイシ　タロウ",
 		CreatedAt:     time.Now().Round(time.Second),
@@ -98,7 +97,6 @@ func TestGetUserByStudentNumber(t *testing.T) {
 		StudentNumber: uint(20122027),
 	}
 
-	// モックの期待値の設定
 	rows := sqlmock.NewRows([]string{"name", "created_at", "updated_at", "student_number"}).
 		AddRow(sampleUser.Name, sampleUser.CreatedAt, sampleUser.UpdatedAt, sampleUser.StudentNumber)
 	mock.ExpectQuery("^SELECT \\* FROM `users` WHERE student_number=\\? ORDER BY `users`.`student_number` LIMIT 1$").
