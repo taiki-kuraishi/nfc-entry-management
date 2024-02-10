@@ -24,6 +24,7 @@
         "pylint",
         "ozzo",
         "mypy",
+        "mockdb",
         "labstack",
         "isort",
         "gorm",
