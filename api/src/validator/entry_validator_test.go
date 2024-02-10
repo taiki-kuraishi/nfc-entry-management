@@ -1,7 +1,8 @@
-package validator
+package validator_test
 
 import (
 	"api/model"
+	"api/validator"
 	"os"
 	"strconv"
 	"testing"
@@ -11,6 +12,8 @@ import (
 )
 
 func TestEntryValidator_StudentNumberValidation(t *testing.T) {
+	ev := validator.IEntryValidator(validator.NewEntryValidator())
+
 	StudentNumberMin, err := strconv.ParseUint(os.Getenv("STUDENT_NUMBER_MIN"), 10, 64)
 	assert.NoError(t, err)
 
@@ -18,8 +21,6 @@ func TestEntryValidator_StudentNumberValidation(t *testing.T) {
 	assert.NoError(t, err)
 
 	sampleStudentNumber := uint(20122027)
-
-	ev := &EntryValidator{}
 
 	// Test case 1 valid student number
 	err = ev.StudentNumberValidation(sampleStudentNumber)
@@ -51,12 +52,12 @@ func TestEntryValidator_StudentNumberValidation(t *testing.T) {
 }
 
 func TestEntryValidator_EntryValidation(t *testing.T) {
+	ev := validator.IEntryValidator(validator.NewEntryValidator())
+
 	TimeValidationMin, err := strconv.ParseInt(os.Getenv("TIME_VALIDATION_MIN"), 10, 64)
 	assert.NoError(t, err)
 
 	sampleStudentNumber := uint(20122027)
-
-	ev := &EntryValidator{}
 
 	// Test case 1 valid entry
 	entry := model.Entry{

@@ -1,7 +1,8 @@
-package validator
+package validator_test
 
 import (
 	"api/model"
+	"api/validator"
 	"os"
 	"strconv"
 	"testing"
@@ -10,7 +11,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUserValidator(t *testing.T) {
+type TestUserValidator struct {
+	uv validator.IUserValidator
+}
+
+func (tuv *TestUserValidator) TestUserValidation(t *testing.T) {
 	TimeValidationMin, err := strconv.ParseInt(os.Getenv("TIME_VALIDATION_MIN"), 10, 64)
 	assert.NoError(t, err)
 
@@ -18,16 +23,14 @@ func TestUserValidator(t *testing.T) {
 	sampleName := "カイシ　タロウ"
 	sampleTime := time.Now()
 
-	uv := &UserValidator{}
-
 	//Test case 1 valid user
 	user := model.User{
-		StudentNumber: 20122027,
+		StudentNumber: sampleStudentNumber,
 		Name:          sampleName,
 		CreatedAt:     sampleTime,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	assert.NoError(t, err)
 
 	//Test case 2 invalid StudentNumber (not required)
@@ -36,7 +39,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt: sampleTime,
 		UpdatedAt: sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages := "student number is required"
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -47,7 +50,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     sampleTime,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "student number must be greater than 10000000"
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -58,7 +61,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     sampleTime,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "student number must be less than 39999999"
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -69,7 +72,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     sampleTime,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	assert.NoError(t, err)
 
 	//Test case 6 valid StudentNumber (maximum allowed value)
@@ -79,7 +82,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     sampleTime,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	assert.NoError(t, err)
 
 	//Test case 7 invalid Name (not required)
@@ -88,7 +91,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     sampleTime,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "name is required"
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -99,7 +102,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     sampleTime,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "name must be between 2 and 32 characters"
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -110,7 +113,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     sampleTime,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "name must be between 2 and 32 characters"
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -121,7 +124,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     sampleTime,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	assert.NoError(t, err)
 
 	//Test case 11 valid Name (maximum allowed length)
@@ -131,7 +134,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     sampleTime,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	assert.NoError(t, err)
 
 	//Test case 12 invalid CreatedAt (not required)
@@ -140,7 +143,7 @@ func TestUserValidator(t *testing.T) {
 		Name:          sampleName,
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "created at is required"
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -148,10 +151,10 @@ func TestUserValidator(t *testing.T) {
 	user = model.User{
 		StudentNumber: sampleStudentNumber,
 		Name:          sampleName,
-		CreatedAt:     time.Unix(TimeValidationMin -1 , 0),
+		CreatedAt:     time.Unix(TimeValidationMin-1, 0),
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "created at must be after " + time.Unix(TimeValidationMin, 0).String()
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -162,7 +165,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     time.Now().Add(time.Second),
 		UpdatedAt:     time.Now().Add(time.Second),
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "created at must be before " + time.Now().Round(time.Second).String()
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -173,7 +176,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     time.Unix(TimeValidationMin, 0),
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	assert.NoError(t, err)
 
 	//Test case 16 valid CreatedAt (maximum allowed value)
@@ -183,7 +186,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     time.Now().Add(-time.Second),
 		UpdatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	assert.NoError(t, err)
 
 	//Test case 17 invalid UpdatedAt (not required)
@@ -192,7 +195,7 @@ func TestUserValidator(t *testing.T) {
 		Name:          sampleName,
 		CreatedAt:     sampleTime,
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "updated at is required"
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -201,9 +204,9 @@ func TestUserValidator(t *testing.T) {
 		StudentNumber: sampleStudentNumber,
 		Name:          sampleName,
 		CreatedAt:     sampleTime,
-		UpdatedAt:     time.Unix(TimeValidationMin -1 , 0),
+		UpdatedAt:     time.Unix(TimeValidationMin-1, 0),
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "updated at must be after " + time.Unix(TimeValidationMin, 0).String()
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -214,7 +217,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     sampleTime,
 		UpdatedAt:     time.Now().Add(time.Second),
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	exceptedErrorMessages = "updated at must be before " + time.Now().Round(time.Second).String()
 	assert.Equal(t, exceptedErrorMessages, err.Error())
 
@@ -225,7 +228,7 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     time.Unix(TimeValidationMin, 0),
 		UpdatedAt:     time.Unix(TimeValidationMin, 0),
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	assert.NoError(t, err)
 
 	//Test case 21 valid UpdatedAt (maximum allowed value)
@@ -235,6 +238,6 @@ func TestUserValidator(t *testing.T) {
 		CreatedAt:     time.Now().Add(-time.Second),
 		UpdatedAt:     time.Now().Add(-time.Second),
 	}
-	err = uv.UserValidation(user)
+	err = tuv.uv.UserValidation(user)
 	assert.NoError(t, err)
 }
