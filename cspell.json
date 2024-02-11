@@ -23,6 +23,7 @@
         "pyproject",
         "pylint",
         "ozzo",
+        "Nooop",
         "mypy",
         "mockdb",
         "labstack",
