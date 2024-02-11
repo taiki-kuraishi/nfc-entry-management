@@ -6,8 +6,8 @@ import (
 	"github.com/labstack/echo"
 )
 
-func NewRouter(uc controller.IApiController) *echo.Echo {
+func NewRouter(c controller.IUserAndEntryController) *echo.Echo {
 	e := echo.New()
-	e.POST("/", uc.RootController)
+	e.POST("/", c.HandleUserAndEntry)
 	return e
 }

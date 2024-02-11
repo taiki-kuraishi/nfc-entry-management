@@ -10,11 +10,11 @@ import (
 	"github.com/labstack/echo"
 )
 
-type IApiController interface {
-	RootController(c echo.Context) error
+type IUserAndEntryController interface {
+	HandleUserAndEntry(c echo.Context) error
 }
 
-type ApiController struct {
+type UserAndEntryController struct {
 	uu usecase.IUserUsecase
 	eu usecase.IEntryUsecase
 }
@@ -24,21 +24,32 @@ type Response struct {
 	EntryMessage string `json:"entry_message"`
 }
 
-type EntryRequest struct {
+type Request struct {
 	StudentNumber uint    `json:"student_number"`
 	Name          string  `json:"name"`
 	Timestamp     float64 `json:"timestamp"`
 }
 
-func NewApiController(uu usecase.IUserUsecase, eu usecase.IEntryUsecase) IApiController {
-	return &ApiController{uu, eu}
+func NewUserAndEntryController(uu usecase.IUserUsecase, eu usecase.IEntryUsecase) IUserAndEntryController {
+	return &UserAndEntryController{uu, eu}
 }
 
-func (ac *ApiController) RootController(c echo.Context) error {
-	request := EntryRequest{}
+func (ac *UserAndEntryController) HandleUserAndEntry(c echo.Context) error {
+	request := Request{}
 	if err := c.Bind(&request); err != nil {
 		fmt.Println(err.Error())
 		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	if request.StudentNumber == 0 {
+		fmt.Println("student number is required")
+		return c.JSON(http.StatusBadRequest, "student number is required")
+	}
+	if request.Name == "" {
+		return c.JSON(http.StatusBadRequest, "name is required")
+	}
+	if request.Timestamp == 0 {
+		return c.JSON(http.StatusBadRequest, "timestamp is required")
 	}
 
 	// convert float64 to time.Time

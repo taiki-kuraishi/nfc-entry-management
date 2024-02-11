@@ -28,7 +28,7 @@ func main() {
 	entryRepository := repository.NewEntryRepository(db)
 	entryUsecase := usecase.NewEntryUsecase(entryRepository, entryValidator)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
-	apiController := controller.NewApiController(userUsecase, entryUsecase)
-	e := router.NewRouter(apiController)
+	UserAndEntryController := controller.NewUserAndEntryController(userUsecase, entryUsecase)
+	e := router.NewRouter(UserAndEntryController)
 	e.Logger.Fatal(e.Start(":8080"))
 }
