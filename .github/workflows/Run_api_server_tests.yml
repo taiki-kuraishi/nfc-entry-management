@@ -1,0 +1,33 @@
+name: Run api server tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  run-api-server-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create api/.env.api
+        run: |
+          touch api/.env.api
+          echo "TIME_VALIDATION_MIN=${{ secrets.TIME_VALIDATION_MIN }}" >> api/.env.api
+          echo "STUDENT_NUMBER_MIN=${{ secrets.STUDENT_NUMBER_MIN }}" >> api/.env.api
+          echo "STUDENT_NUMBER_MAX=${{ secrets.STUDENT_NUMBER_MAX }}" >> api/.env.api
+          echo "NAME_MIN_LENGTH=${{ secrets.NAME_MIN_LENGTH }}" >> api/.env.api
+          echo "NAME_MAX_LENGTH=${{ secrets.NAME_MAX_LENGTH }}" >> api/.env.api
+          echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> api/.env.api
+          echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> api/.env.api
+          echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> api/.env.api
+          echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> api/.env.api
+
+      - name: Run Go tests
+        run: |
+          cd api/ && sudo docker build --target test -t nfc-entry-management-api-test:latest -f ./Dockerfile .
+          sudo docker run --env-file .env.api --rm nfc-entry-management-api-test:latest

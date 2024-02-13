@@ -13,6 +13,13 @@ RUN go mod tidy
 
 ENV PATH="/app/bin:${PATH}"
 
+# test stage
+FROM base AS test
+
+WORKDIR /app
+
+CMD [ "go","test","-v","./..." ]
+
 # development stage
 FROM base AS development
 
