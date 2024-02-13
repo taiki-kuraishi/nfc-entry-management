@@ -1,8 +1,6 @@
 package model
 
-import (
-	"time"
-)
+import "time"
 
 type User struct {
 	StudentNumber uint      `json:"student_number" gorm:"primary_key"`

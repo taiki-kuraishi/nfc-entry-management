@@ -59,6 +59,15 @@ repos:
 
   - repo: local
     hooks:
+      - id: go-tests
+        name: Run Go tests
+        entry: sh -c 'cd api/ && docker build --target test -t nfc-entry-management-api-test:latest -f ./Dockerfile . && docker run --env-file .env.api --rm nfc-entry-management-api-test:latest'
+        language: system
+        pass_filenames: false
+        stages: [commit]
+
+  - repo: local
+    hooks:
       - id: docker-compose-check
         name: Run docker-compose build
         entry: docker-compose build

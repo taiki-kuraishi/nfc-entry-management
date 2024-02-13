@@ -14,17 +14,28 @@
     "words": [
         "wontfix",
         "venv",
+        "usecase",
         "usbutils",
+        "Unexited",
+        "stretchr",
+        "sqlmock",
         "rdwr",
         "pyproject",
         "pylint",
+        "ozzo",
+        "Nooop",
+        "mysqld",
+        "mysqladmin",
         "mypy",
+        "mockdb",
         "labstack",
         "isort",
+        "healthcheck",
         "gorm",
         "gopls",
         "golangci",
         "goimports",
-        "dotenv"
+        "dotenv",
+        "Dialector"
     ]
 }

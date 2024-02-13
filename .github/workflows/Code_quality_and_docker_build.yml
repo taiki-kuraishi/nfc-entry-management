@@ -136,6 +136,11 @@ jobs:
       - name: Create api/.env.api
         run: |
           touch api/.env.api
+          echo "TIME_VALIDATION_MIN=${{ secrets.TIME_VALIDATION_MIN }}" >> api/.env.api
+          echo "STUDENT_NUMBER_MIN=${{ secrets.STUDENT_NUMBER_MIN }}" >> api/.env.api
+          echo "STUDENT_NUMBER_MAX=${{ secrets.STUDENT_NUMBER_MAX }}" >> api/.env.api
+          echo "NAME_MIN_LENGTH=${{ secrets.NAME_MIN_LENGTH }}" >> api/.env.api
+          echo "NAME_MAX_LENGTH=${{ secrets.NAME_MAX_LENGTH }}" >> api/.env.api
           echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> api/.env.api
           echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> api/.env.api
           echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> api/.env.api
@@ -159,6 +164,7 @@ jobs:
           echo "NFC_SERVICE_CODE=${{ secrets.NFC_SERVICE_CODE }}" >> nfc_reader/.env.nfc_reader
           echo "NFC_STUDENT_NUM_BLOCK_CODE=${{ secrets.NFC_STUDENT_NUM_BLOCK_CODE }}" >> nfc_reader/.env.nfc_reader
           echo "NFC_NAME_BLOCK_CODE=${{ secrets.NFC_NAME_BLOCK_CODE }}" >> nfc_reader/.env.nfc_reader
+          echo "API_URL=${{ secrets.API_URL }}" >> nfc_reader/.env.nfc_reader
 
       - name: Build docker image
         run: sudo docker-compose build

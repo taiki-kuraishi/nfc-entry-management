@@ -1,24 +1,17 @@
 package db
 
 import (
-	"fmt"
 	"log"
-	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func ConnectDB() *gorm.DB {
-
-	url := fmt.Sprintf("%s:%s@tcp(%s)/%s", os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_HOST"), os.Getenv("MYSQL_DATABASE"))
-
-	db, err := gorm.Open(mysql.Open(url), &gorm.Config{})
+func ConnectDB(config mysql.Config) *gorm.DB {
+	db, err := gorm.Open(mysql.New(config), &gorm.Config{})
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Printf("Connected")
-
 	return db
 }
 
@@ -27,5 +20,9 @@ func CloseDB(db *gorm.DB) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	dbSQL.Close()
+
+	err = dbSQL.Close()
+	if err != nil {
+		log.Println(err)
+	}
 }

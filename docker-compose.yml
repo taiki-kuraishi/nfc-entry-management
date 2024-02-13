@@ -7,13 +7,15 @@ services:
       dockerfile: Dockerfile
       target: development
     volumes:
-      - ./api/src:/app/src
-      - ./api/.golangci.yml:/app/.golangci.yml
+      - ./api/src:/app
     ports :
       - "8080:8080"
     env_file:
       - ./api/.env.api
-    tty: true
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: ["go","run","main.go"]
 
   mysql:
     container_name: nfc-entry-management-mysql
@@ -25,6 +27,12 @@ services:
       - "3306:3306"
     env_file:
       - ./mysql/.env.mysql
+    healthcheck:
+      test: ["CMD-SHELL","mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD | grep 'mysqld is alive'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
 
   nfc_reader:
     container_name: nfc-entry-management-nfc-reader
