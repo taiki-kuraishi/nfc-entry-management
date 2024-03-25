@@ -9,3 +9,9 @@
     ```
     task setup
     ```
+
+### 説明
+これはデモンストレーション用のブランチです
+issue link :  https://github.com/taiki-kuraishi/nfc-entry-management/issues/14
+
+デモ用にログが多く出力されます。
