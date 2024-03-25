@@ -1,0 +1,41 @@
+version: "3"
+
+tasks:
+  setup:
+    dir: .
+    cmds:
+      - pre-commit install
+      - if [ ! -f api/.env.api ]; then cp api/.env.api.example api/.env.api ; fi
+      - if [ ! -f mysql/.env.mysql ]; then cp mysql/.env.mysql.example mysql/.env.mysql ; fi
+      - if [ ! -f nfc_reader/.env.nfc_reader ]; then cp nfc_reader/.env.nfc_reader.example nfc_reader/.env.nfc_reader ; fi
+      - docker-compose build
+      - docker-compose up -d
+      - task migrate
+      - docker-compose exec -T api go run main.go
+
+  teardown:
+    dir: .
+    cmds:
+      - pre-commit uninstall
+      - docker-compose down -v
+
+  start:
+    dir: .
+    cmds:
+      - docker-compose up -d
+      - docker-compose exec -T api go run main.go
+
+  stop:
+    dir: .
+    cmds:
+      - docker-compose down
+
+  migrate:
+    dir: .
+    cmds:
+      - docker-compose exec -T api go run migrate/migrate.go
+
+  test:
+    dir: .
+    cmds:
+      - docker-compose exec -T api go test -cover ./...
