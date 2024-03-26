@@ -46,9 +46,11 @@ func (ac *UserAndEntryController) HandleUserAndEntry(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "student number is required")
 	}
 	if request.Name == "" {
+		fmt.Println("name is required")
 		return c.JSON(http.StatusBadRequest, "name is required")
 	}
 	if request.Timestamp == 0 {
+		fmt.Println("timestamp is required")
 		return c.JSON(http.StatusBadRequest, "timestamp is required")
 	}
 
@@ -79,6 +81,8 @@ func (ac *UserAndEntryController) HandleUserAndEntry(c echo.Context) error {
 		UserMessage:  userMessage,
 		EntryMessage: entryMessage,
 	}
+
+	fmt.Println(userMessage + "\n" +entryMessage + "\n" )
 
 	return c.JSON(http.StatusOK, response)
 }

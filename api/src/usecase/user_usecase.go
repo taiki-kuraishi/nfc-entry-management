@@ -4,6 +4,7 @@ import (
 	"api/model"
 	"api/repository"
 	"api/validator"
+	"strconv"
 )
 
 type IUserUsecase interface {
@@ -20,6 +21,8 @@ func NewUserUsecase(ur repository.IUserRepository, uv validator.IUserValidator) 
 }
 
 func (uu *UserUsecase) CreateOrUpdateUser(user model.User) (string, error) {
+	var studentNumberAsString string = strconv.Itoa(int(user.StudentNumber))
+
 	//Validate user
 	if eer := uu.uv.UserValidation(user); eer != nil {
 		return "", eer
@@ -36,7 +39,7 @@ func (uu *UserUsecase) CreateOrUpdateUser(user model.User) (string, error) {
 		if err := uu.ur.CreateUser(&user); err != nil {
 			return "", err
 		}
-		return "User created", nil
+		return "Create user : " + studentNumberAsString, nil
 	}
 
 	//Update user
@@ -44,8 +47,8 @@ func (uu *UserUsecase) CreateOrUpdateUser(user model.User) (string, error) {
 		if err := uu.ur.UpdateUser(&user); err != nil {
 			return "", err
 		}
-		return "User updated", nil
+		return "User updated : " + studentNumberAsString, nil
 	}
 
-	return "User already exists", nil
+	return "User already exists : " + studentNumberAsString, nil
 }

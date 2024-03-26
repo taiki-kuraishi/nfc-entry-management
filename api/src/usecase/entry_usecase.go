@@ -22,7 +22,7 @@ func NewEntryUsecase(er repository.IEntryRepository, ev validator.IEntryValidato
 
 func (eu *EntryUsecase) EntryOrExit(studentNumber uint, timestamp time.Time) (string, error) {
 	if err := eu.ev.StudentNumberValidation(studentNumber); err != nil {
-		return "", err
+		return "student_number is invalid", err
 	}
 
 	newEntry := model.Entry{}
@@ -45,7 +45,7 @@ func (eu *EntryUsecase) EntryOrExit(studentNumber uint, timestamp time.Time) (st
 		if err := eu.er.CreateEntry(&newEntry); err != nil {
 			return "", err
 		}
-		return "entry success", nil
+		return "Entry success", nil
 	}
 
 	//exit
@@ -59,5 +59,5 @@ func (eu *EntryUsecase) EntryOrExit(studentNumber uint, timestamp time.Time) (st
 		return "", err
 	}
 
-	return "exit success", nil
+	return "Exit success", nil
 }
