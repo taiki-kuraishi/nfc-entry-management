@@ -75,18 +75,18 @@ func (ev *EntryValidator) EntryValidation(entry model.Entry) error {
 		return err
 	}
 
-	TimeValidationMin, err := strconv.ParseInt(os.Getenv("TIME_VALIDATION_MIN"), 10, 64)
-	if err != nil {
-		return err
-	}
+	// TimeValidationMin, err := strconv.ParseInt(os.Getenv("TIME_VALIDATION_MIN"), 10, 64)
+	// if err != nil {
+	// 	return err
+	// }
 
 	err = validation.ValidateStruct(&entry,
-		validation.Field(
-			&entry.EntryTime,
-			validation.Required.Error("entry time is required"),
-			validation.Min(time.Unix(TimeValidationMin, 0)).Error("must be after "+time.Unix(TimeValidationMin, 0).String()),
-			validation.Max(time.Now()).Error("must be before "+time.Now().Round(time.Second).String()),
-		),
+		// validation.Field(
+		// 	&entry.EntryTime,
+		// 	validation.Required.Error("entry time is required"),
+		// 	validation.Min(time.Unix(TimeValidationMin, 0)).Error("must be after "+time.Unix(TimeValidationMin, 0).String()),
+		// 	validation.Max(time.Now()).Error("must be before "+time.Now().Round(time.Second).String()),
+		// ),
 		validation.Field(
 			&entry.StudentNumber,
 			validation.Required.Error("student number is required"),
@@ -98,15 +98,15 @@ func (ev *EntryValidator) EntryValidation(entry model.Entry) error {
 		return err
 	}
 
-	if entry.ExitTime != nil {
-		err = validation.ValidateStruct(&entry,
-			validation.Field(
-				&entry.ExitTime,
-				TimeAfter{required: entry.EntryTime},
-				TimeBefore{required: time.Now().Round(time.Second)},
-			),
-		)
-	}
+	// if entry.ExitTime != nil {
+	// 	err = validation.ValidateStruct(&entry,
+	// 		validation.Field(
+	// 			&entry.ExitTime,
+	// 			TimeAfter{required: entry.EntryTime},
+	// 			TimeBefore{required: time.Now().Round(time.Second)},
+	// 		),
+	// 	)
+	// }
 
 	return err
 }
