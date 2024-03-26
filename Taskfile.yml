@@ -21,12 +21,12 @@ tasks:
   start:
     dir: .
     cmds:
-      - docker-compose up -d
+      - docker-compose start
 
   stop:
     dir: .
     cmds:
-      - docker-compose down
+      - docker-compose stop
 
   migrate:
     dir: .
