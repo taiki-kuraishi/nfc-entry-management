@@ -16,6 +16,7 @@ services:
       mysql:
         condition: service_healthy
     tty: true
+    command: ["go", "run", "main.go"]
 
   mysql:
     container_name: nfc-entry-management-mysql

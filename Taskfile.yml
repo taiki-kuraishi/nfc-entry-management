@@ -11,7 +11,6 @@ tasks:
       - docker-compose build
       - docker-compose up -d
       - task migrate
-      - docker-compose exec -T api go run main.go
 
   teardown:
     dir: .
@@ -23,7 +22,6 @@ tasks:
     dir: .
     cmds:
       - docker-compose up -d
-      - docker-compose exec -T api go run main.go
 
   stop:
     dir: .
@@ -34,6 +32,11 @@ tasks:
     dir: .
     cmds:
       - docker-compose exec -T api go run migrate/migrate.go
+
+  send_dummy_request:
+    dir: .
+    cmds:
+      - docker-compose exec -T nfc_reader python src/send_dummy_req.py
 
   test:
     dir: .
